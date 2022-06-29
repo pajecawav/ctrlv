@@ -29,11 +29,11 @@ if (!isDev) {
 	});
 }
 
-server.get("/ping", async (request, reply) => {
-	return { data: "pong" };
-});
-
 server.register(apiRouter, { prefix: "/api" });
+
+server.setNotFoundHandler((req, res) => {
+	res.sendFile("index.html");
+});
 
 server.listen({ port: PORT, host: HOST }, (err, address) => {
 	if (err) {

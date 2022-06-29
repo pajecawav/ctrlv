@@ -25,7 +25,6 @@ export const apiRouter: FastifyPluginCallback = async (api, options) => {
 	);
 
 	api.post<{ Reply: Response<Note> }>("/notes", async (req, reply) => {
-		console.log(req.body, typeof req.body);
 		await createNoteSchema.parse(req.body);
 		const parsedBody = createNoteSchema.safeParse(req.body);
 
