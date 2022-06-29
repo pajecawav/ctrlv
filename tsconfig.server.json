@@ -1,0 +1,9 @@
+{
+	"extends": "@tsconfig/node16/tsconfig.json",
+	"compilerOptions": {
+		"rootDir": "./server",
+		"outDir": "./dist",
+		"strict": true
+	},
+	"include": ["server"]
+}
