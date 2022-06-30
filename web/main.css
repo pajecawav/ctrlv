@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-	@apply dark:bg-[#181a1b] transition-colors;
+	@apply dark:bg-zinc-800 transition-colors;
 }

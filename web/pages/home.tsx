@@ -5,6 +5,7 @@ import { useLocation } from "wouter-preact";
 import type { Note, Response } from "../../server/types";
 import { Button } from "../components/Button";
 import { Textarea } from "../components/Textarea";
+import { encryptData } from "../encryption";
 
 export function HomePage() {
 	const [, setLocation] = useLocation();
@@ -17,7 +18,7 @@ export function HomePage() {
 
 		const form = e.target as HTMLFormElement;
 		const formData = new FormData(form);
-		const text = formData.get("text");
+		const text = formData.get("text") as string;
 
 		if (!text) {
 			return;
@@ -25,19 +26,19 @@ export function HomePage() {
 
 		setIsSubmitting(true);
 
+		const encrypted = await encryptData(text);
+
 		const response = await $fetch<Response<Note>>("/api/notes", {
 			method: "POST",
-			body: { text },
+			body: { text: encrypted.encrypted },
 		});
 		const { data: note } = response;
+
 		await mutate<Response<Note>>(`/api/notes/${note.id}`, response, {
 			revalidate: false,
-			populateCache: true,
-			optimisticData: response,
-			rollbackOnError: true,
 		});
 
-		setLocation(`/${note.id}`);
+		setLocation(`/${note.id}#${encrypted.objectKey}`);
 	}
 
 	return (

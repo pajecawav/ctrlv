@@ -2,7 +2,9 @@ import Database from "better-sqlite3";
 import { customAlphabet } from "nanoid";
 import { Note } from "./types";
 
-const db = new Database(":memory:");
+const dbUrl = process.env.DATABASE_URL ?? ":memory:";
+console.log(`Opening database ${dbUrl}`);
+const db = new Database(dbUrl);
 
 function initDb() {
 	db.prepare(

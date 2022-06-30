@@ -1,5 +1,8 @@
-import fastify from "fastify";
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import fastifyStatic from "@fastify/static";
+import fastify from "fastify";
 import path from "path";
 import { apiRouter } from "./api";
 

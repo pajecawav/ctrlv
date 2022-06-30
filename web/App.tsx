@@ -12,7 +12,7 @@ export default function App() {
 	return (
 		<SWRConfig value={swrConfig}>
 			<div className="max-w-3xl min-h-screen mx-auto px-2 pb-2 flex flex-col font-medium dark:text-zinc-300">
-				<header className="flex justify-between py-2">
+				<header className="flex items-center justify-between py-2">
 					<Link href="/new" className="text-lg">
 						ctrlv
 					</Link>

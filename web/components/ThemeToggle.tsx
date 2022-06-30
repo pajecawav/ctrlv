@@ -44,7 +44,11 @@ export function ThemeToggle() {
 	}, [theme]);
 
 	return (
-		<IconButton onClick={toggleTheme} aria-label="Toggle theme">
+		<IconButton
+			className="text-xl"
+			onClick={toggleTheme}
+			aria-label="Toggle theme"
+		>
 			{theme === "light" ? <SunIcon /> : <MoonIcon />}
 		</IconButton>
 	);
