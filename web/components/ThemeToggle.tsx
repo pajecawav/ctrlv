@@ -26,7 +26,7 @@ export function ThemeToggle() {
 
 	function rawSetTheme(theme: Theme) {
 		const root = document.documentElement;
-		if (theme === "light") {
+		if (theme === "dark") {
 			root.classList.add("dark");
 		} else {
 			root.classList.remove("dark");
@@ -36,11 +36,11 @@ export function ThemeToggle() {
 	function toggleTheme() {
 		const newTheme = theme === "light" ? "dark" : "light";
 		setTheme(newTheme);
-		localStorage.setItem(themeKey, newTheme);
 	}
 
 	useEffect(() => {
 		rawSetTheme(theme);
+		localStorage.setItem(themeKey, theme);
 	}, [theme]);
 
 	return (
@@ -49,7 +49,7 @@ export function ThemeToggle() {
 			onClick={toggleTheme}
 			aria-label="Toggle theme"
 		>
-			{theme === "light" ? <SunIcon /> : <MoonIcon />}
+			{theme === "light" ? <MoonIcon /> : <SunIcon />}
 		</IconButton>
 	);
 }
