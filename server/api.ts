@@ -1,11 +1,16 @@
 import { FastifyPluginCallback } from "fastify";
 import { z } from "zod";
-import { createNote, findNote, findNotes } from "./db";
+import { createNote, findNote } from "./db";
 import { badRequest, notFound } from "./responses";
 import { Note, Response } from "./types";
 
 const createNoteSchema = z.object({
 	text: z.string().max(20000),
+	expirationTimeSeconds: z
+		.number()
+		.max(365 * 24 * 60 * 60) // 1 year
+		.nullable()
+		.default(null),
 });
 type CreateNoteSchema = z.infer<typeof createNoteSchema>;
 
@@ -32,8 +37,14 @@ export const apiRouter: FastifyPluginCallback = async (api, options) => {
 			return badRequest(reply);
 		}
 
-		const { data } = parsedBody;
-		const note = await createNote(data);
+		const {
+			data: { text, expirationTimeSeconds },
+		} = parsedBody;
+		const expiresAt = expirationTimeSeconds
+			? Date.now() + expirationTimeSeconds * 1000
+			: null;
+
+		const note = await createNote({ text, expiresAt });
 
 		return { data: note };
 	});

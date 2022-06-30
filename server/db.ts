@@ -9,8 +9,10 @@ const db = new Database(dbUrl);
 function initDb() {
 	db.prepare(
 		`CREATE TABLE IF NOT EXISTS notes (
-            id STRING PRIMARY KEY NOT NULL,
-            text TEXT NOT NULL
+            id TEXT PRIMARY KEY NOT NULL,
+            text TEXT NOT NULL,
+            createdAt INTEGER NOT NULL DEFAULT (unixepoch()),
+            expiresAt INTEGER
         );`
 	).run();
 }
@@ -21,26 +23,32 @@ const ALPHABET =
 	"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const nanoid = customAlphabet(ALPHABET, 10);
 
-export async function createNote({ text }: { text: string }): Promise<Note> {
-	const note = { id: nanoid(), text };
+export async function createNote({
+	text,
+	expiresAt = null,
+}: {
+	text: string;
+	expiresAt?: number | null;
+}): Promise<Note> {
+	const note = { id: nanoid(), text, createdAt: Date.now(), expiresAt };
 
 	const result = db
-		.prepare("INSERT INTO notes VALUES (@id, @text)")
+		.prepare(
+			"INSERT INTO notes VALUES (@id, @text, @createdAt, @expiresAt)"
+		)
 		.run(note);
 
 	return note;
 }
 
-export async function findNotes(): Promise<Note[]> {
-	const notes: Note[] = db.prepare("SELECT id, text FROM notes").all();
-
-	return notes;
-}
-
 export async function findNote(id: string): Promise<Note | null> {
 	const note: Note = db
-		.prepare("SELECT id, text FROM notes WHERE id = ?")
-		.get(id);
+		.prepare(
+			`SELECT id, text, createdAt, expiresAt FROM notes
+             WHERE id = @id
+             AND (expiresAt IS NULL OR expiresAt > @now)`
+		)
+		.get({ id, now: Date.now() });
 
 	return note;
 }

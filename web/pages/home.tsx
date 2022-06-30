@@ -4,8 +4,23 @@ import { useSWRConfig } from "swr";
 import { useLocation } from "wouter-preact";
 import type { Note, Response } from "../../server/types";
 import { Button } from "../components/Button";
+import { Select } from "../components/Select";
 import { Textarea } from "../components/Textarea";
 import { encryptData } from "../encryption";
+
+const MINUTE = 60;
+const HOUR = 60 * MINUTE;
+const DAY = 24 * HOUR;
+
+const expirationTimes: { label: string; value: number }[] = [
+	{ label: "Never", value: 0 },
+	{ label: "15 Minutes", value: 15 * MINUTE },
+	{ label: "1 Hour", value: HOUR },
+	{ label: "1 Day", value: DAY },
+	{ label: "1 Week", value: 7 * DAY },
+	{ label: "1 Month", value: 30 * DAY },
+	{ label: "1 Year", value: 365 * DAY },
+];
 
 export function HomePage() {
 	const [, setLocation] = useLocation();
@@ -19,6 +34,8 @@ export function HomePage() {
 		const form = e.target as HTMLFormElement;
 		const formData = new FormData(form);
 		const text = formData.get("text") as string;
+		const expirationTimeSeconds =
+			(+formData.get("expirationTimeSeconds")! as number) || null;
 
 		if (!text) {
 			return;
@@ -30,7 +47,7 @@ export function HomePage() {
 
 		const response = await $fetch<Response<Note>>("/api/notes", {
 			method: "POST",
-			body: { text: encrypted.encrypted },
+			body: { text: encrypted.encrypted, expirationTimeSeconds },
 		});
 		const { data: note } = response;
 
@@ -43,13 +60,25 @@ export function HomePage() {
 
 	return (
 		<form
-			className="flex flex-col flex-grow items-center gap-2"
+			className="flex flex-col flex-grow gap-2"
 			onSubmit={handleSubmit}
 			disabled={isSubmitting}
 		>
-			<Button type="submit" isLoading={isSubmitting}>
-				Save
-			</Button>
+			<div className="flex gap-2">
+				<Button type="submit" isLoading={isSubmitting}>
+					Save
+				</Button>
+				<label className="flex items-center gap-2 ml-auto">
+					Expires
+					<Select name="expirationTimeSeconds">
+						{expirationTimes.map(({ label, value }) => (
+							<option value={value} key={value}>
+								{label}
+							</option>
+						))}
+					</Select>
+				</label>
+			</div>
 			<Textarea
 				className="w-full flex-grow"
 				name="text"

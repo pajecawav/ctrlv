@@ -5,6 +5,7 @@ import type { Note, Response } from "../../server/types";
 import { Spinner } from "../components/Spinner";
 import { Textarea } from "../components/Textarea";
 import { decryptData } from "../encryption";
+import { formatCreatedDate, formatRelativeTime } from "../utils";
 
 interface NotePageProps {
 	id: string;
@@ -77,8 +78,25 @@ export function NotePage({ id }: NotePageProps) {
 	const error = apiError?.response?.statusText || encryptionError;
 
 	return (
-		<div className="flex flex-col flex-grow gap-1">
+		<div className="flex flex-col flex-grow gap-2">
 			{error && <div className="text-red-400 mx-auto">{error}</div>}
+
+			{data && (
+				<div className="flex justify-between">
+					<div title={new Date(data.data.createdAt).toLocaleString()}>
+						Created {formatCreatedDate(data.data.createdAt)}
+					</div>
+					{data.data.expiresAt && (
+						<div
+							title={new Date(
+								data.data.expiresAt
+							).toLocaleString()}
+						>
+							Expires {formatRelativeTime(data.data.expiresAt)}
+						</div>
+					)}
+				</div>
+			)}
 
 			<div className="relative flex-grow flex">
 				<Textarea
@@ -87,7 +105,7 @@ export function NotePage({ id }: NotePageProps) {
 					value={text ?? ""}
 				/>
 				{!text && (
-					<span className="absolute inset-0 grid place-items-center bg-black/10">
+					<span className="absolute inset-0 grid place-items-center bg-zinc-200/50 dark:bg-zinc-700/50">
 						<Spinner />
 					</span>
 				)}

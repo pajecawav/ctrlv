@@ -5,4 +5,6 @@ export interface Response<T> {
 export interface Note {
 	id: string;
 	text: string;
+	createdAt: number;
+	expiresAt?: number | null;
 }
