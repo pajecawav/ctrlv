@@ -1,14 +1,21 @@
-import { ComponentProps } from "preact";
+import { ComponentProps, ComponentType } from "preact";
+import type { Link, LinkProps } from "wouter-preact";
 import { cn } from "../utils";
 
-interface IconButtonProps extends ComponentProps<"button"> {}
+interface IconButtonProps extends Omit<ComponentProps<"button">, "as"> {
+	as?: ComponentType<any> | keyof JSX.IntrinsicElements;
+}
 
-export function IconButton({ className, ...props }: IconButtonProps) {
+export function IconButton({
+	className,
+	as: Component = "button",
+	...props
+}: IconButtonProps) {
 	return (
-		<button
+		<Component
 			className={cn(
-				"rounded-md p-[0.25em] transition-all disabled:opacity-75",
-				"enabled:hover:bg-zinc-100 enabled:active:bg-zink-200 dark:enabled:hover:bg-zinc-700 dark:enabled:active:bg-zinc-600",
+				"rounded-md p-[0.25em] transition-all",
+				"hover:bg-zinc-100 active:bg-zink-200 dark:hover:bg-zinc-700 dark:active:bg-zinc-600",
 				className
 			)}
 			{...props}

@@ -10,7 +10,11 @@ export function cn(...values: any[]): string {
 export function formatCreatedDate(date: number | string | dayjs.Dayjs) {
 	date = dayjs(date);
 	const now = dayjs();
-	const format = date.isSame(now, "year") ? "D MMM" : "D MMM, YYYY";
+	const format = date.isSame(now, "day")
+		? "hh:mm"
+		: date.isSame(now, "year")
+		? "D MMM"
+		: "D MMM, YYYY";
 	return date.format(format);
 }
 

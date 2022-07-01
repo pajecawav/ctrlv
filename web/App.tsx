@@ -1,6 +1,9 @@
 import { SWRConfig, SWRConfiguration } from "swr";
 import { Link, Redirect, Route, Switch } from "wouter-preact";
+import { IconButton } from "./components/IconButton";
+import { CollectionIcon } from "./components/icons/CollectionIcon";
 import { ThemeToggle } from "./components/ThemeToggle";
+import { HistoryPage } from "./pages/history";
 import { HomePage } from "./pages/home";
 import { NotePage } from "./pages/note";
 
@@ -17,12 +20,20 @@ export default function App() {
 						ctrlv
 					</Link>
 
-					<ThemeToggle />
+					<div className="flex text-xl">
+						<Link href="/history">
+							<IconButton as="a" title="Open notes history">
+								<CollectionIcon />
+							</IconButton>
+						</Link>
+						<ThemeToggle />
+					</div>
 				</header>
 
 				<main className="mt-2 flex-grow flex flex-col">
 					<Switch>
 						<Route path="/new" component={HomePage} />
+						<Route path="/history" component={HistoryPage} />
 						<Route path="/:id">
 							{({ id }) => <NotePage id={id} />}
 						</Route>

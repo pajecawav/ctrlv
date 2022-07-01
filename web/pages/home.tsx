@@ -7,6 +7,7 @@ import { Button } from "../components/Button";
 import { Select } from "../components/Select";
 import { Textarea } from "../components/Textarea";
 import { encryptData } from "../encryption";
+import { useNotesHistoryStore } from "../stores/useNotesHistoryStore";
 
 const MINUTE = 60;
 const HOUR = 60 * MINUTE;
@@ -23,6 +24,7 @@ const expirationTimes: { label: string; value: number }[] = [
 ];
 
 export function HomePage() {
+	const store = useNotesHistoryStore();
 	const [, setLocation] = useLocation();
 	const { mutate } = useSWRConfig();
 
@@ -53,6 +55,13 @@ export function HomePage() {
 
 		await mutate<Response<Note>>(`/api/notes/${note.id}`, response, {
 			revalidate: false,
+		});
+
+		store.addNote({
+			key: encrypted.objectKey,
+			id: note.id,
+			createdAt: note.createdAt,
+			expiresAt: note.expiresAt,
 		});
 
 		setLocation(`/${note.id}#${encrypted.objectKey}`);

@@ -9,8 +9,8 @@ export function Select(props: SelectProps) {
 		<div className="relative w-max">
 			<select
 				className={cn(
-					"pl-4 pr-8 py-1 rounded-md bg-white transition-colors appearance-none dark:bg-zinc-800",
-					"border border-zinc-400 focus:border-black dark:border-zinc-700 dark:focus:border-zinc-600"
+					"pl-4 pr-8 py-1 rounded-md bg-white transition-colors outline-none appearance-none dark:bg-zinc-800",
+					"border-2 border-zinc-400 focus:border-black dark:border-zinc-700 dark:focus:border-zinc-500"
 				)}
 				{...props}
 			/>
