@@ -36,46 +36,31 @@ export function NotePage({ id }: NotePageProps) {
 		isValidating,
 		error: apiError,
 	} = useSWR<Response<Note>, FetchError>(
-		`/api/notes/${id}`,
-		() => $fetch<Response<Note>>(`/api/notes/${id}`),
-		{ revalidateIfStale: false }
-	);
-
-	const [text, setText] = useState<string | null>(null);
-	const [encryptionError, setEncryptionError] = useState<string | null>(null);
-
-	useEffect(() => {
-		let active = true;
-
-		async function decrypt() {
-			if (!data) {
-				return;
-			}
+		`/api/notes/${id}#${hash}`,
+		async () => {
+			const response = await $fetch<Response<Note>>(`/api/notes/${id}`);
 
 			if (!hash) {
-				setEncryptionError("Encryption key is missing in URL");
-				return;
+				throw new Error("Encryption key is missing in URL");
 			}
 
 			try {
-				const decrypted = await decryptData(data.data.text, hash);
-				if (active) {
-					setText(decrypted);
-				}
+				response.data.text = await decryptData(
+					response.data.text,
+					hash
+				);
 			} catch (e) {
-				setEncryptionError("Failed to decrypt data");
-				return;
+				console.error(e);
+				throw new Error("Failed to decrypt data");
 			}
-		}
 
-		decrypt();
+			return response;
+		},
+		{ revalidateIfStale: false }
+	);
 
-		return () => {
-			active = false;
-		};
-	}, [data, hash]);
-
-	const error = apiError?.response?.statusText || encryptionError;
+	const text = data?.data.text;
+	const error = apiError?.response?.statusText || apiError?.message;
 
 	return (
 		<div className="flex flex-col flex-grow gap-2">
