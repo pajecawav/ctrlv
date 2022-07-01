@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "cross-env NODE_ENV=development run-p -l dev:*",
 		"dev:web": "vite",
-		"dev:server": "esno watch server/main.ts",
+		"dev:server": "esno watch server/main.ts --clear-screen=false",
 		"build": "cross-env NODE_ENV=production run-p -l build:server build:web",
 		"build:web": "tsc && vite build",
 		"build:server": "tsc -p tsconfig.server.json",
