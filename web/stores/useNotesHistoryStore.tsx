@@ -14,6 +14,7 @@ interface NotesHistoryStore {
 	toggle: () => void;
 	addNote: (note: NotesHistoryEntry) => void;
 	cleanExpired: () => void;
+	clean: () => void;
 }
 
 export const useNotesHistoryStore = create<NotesHistoryStore>()(
@@ -33,6 +34,9 @@ export const useNotesHistoryStore = create<NotesHistoryStore>()(
 					);
 					return { notes };
 				});
+			},
+			clean: () => {
+				set({ notes: [] });
 			},
 		}),
 		{
