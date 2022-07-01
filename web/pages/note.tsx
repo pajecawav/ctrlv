@@ -1,11 +1,15 @@
 import { $fetch, FetchError } from "ohmyfetch";
 import { useEffect, useState } from "preact/hooks";
+import { QRCodeCanvas } from "qrcode.react";
 import useSWR from "swr";
+import { useLocation } from "wouter-preact";
 import type { Note, Response } from "../../server/types";
+import { IconButton } from "../components/IconButton";
+import { QrCodeIcon } from "../components/icons/QrCodeIcon";
 import { Spinner } from "../components/Spinner";
 import { Textarea } from "../components/Textarea";
 import { decryptData } from "../encryption";
-import { formatCreatedDate, formatRelativeTime } from "../utils";
+import { cn, formatCreatedDate, formatRelativeTime } from "../utils";
 
 interface NotePageProps {
 	id: string;
@@ -29,7 +33,10 @@ function useHashLocation() {
 }
 
 export function NotePage({ id }: NotePageProps) {
+	const [location] = useLocation();
 	const hash = useHashLocation();
+
+	const url = `${window.location.origin}${location}#${hash}`;
 
 	const {
 		data,
@@ -67,12 +74,35 @@ export function NotePage({ id }: NotePageProps) {
 			{error && <div className="text-red-400 mx-auto">{error}</div>}
 
 			{data && (
-				<div className="flex justify-between">
+				<div className="flex items-center gap-2">
+					<details className="relative">
+						<IconButton
+							className="text-xl list-none cursor-pointer"
+							as="summary"
+						>
+							<QrCodeIcon />
+						</IconButton>
+						<div
+							className={cn(
+								"absolute z-10 top-full left-0 mt-1 p-4 shadow-xl rounded-md",
+								"border border-zinc-200 bg-white dark:bg-zinc-800 dark:border-zinc-700"
+							)}
+						>
+							<QRCodeCanvas
+								value={url}
+								size={192}
+								className="rounded-md overflow-hidden"
+							/>
+						</div>
+					</details>
+
 					<div title={new Date(data.data.createdAt).toLocaleString()}>
 						Created {formatCreatedDate(data.data.createdAt)}
 					</div>
+
 					{data.data.expiresAt && (
 						<div
+							className="ml-auto"
 							title={new Date(
 								data.data.expiresAt
 							).toLocaleString()}

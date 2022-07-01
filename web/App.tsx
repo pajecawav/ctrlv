@@ -20,7 +20,7 @@ export default function App() {
 						ctrlv
 					</Link>
 
-					<div className="flex text-xl">
+					<div className="flex gap-1 text-xl">
 						<Link href="/history">
 							<IconButton as="a" title="Open notes history">
 								<CollectionIcon />
@@ -30,7 +30,7 @@ export default function App() {
 					</div>
 				</header>
 
-				<main className="mt-2 flex-grow flex flex-col">
+				<main className="flex-grow flex flex-col">
 					<Switch>
 						<Route path="/new" component={HomePage} />
 						<Route path="/history" component={HistoryPage} />
