@@ -1,5 +1,5 @@
-import * as dotenv from "dotenv";
-dotenv.config();
+// for some reason calling dotenv.config doesn't work correctly
+import "dotenv/config";
 
 import fastifyStatic from "@fastify/static";
 import fastify from "fastify";
