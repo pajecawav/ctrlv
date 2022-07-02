@@ -1,7 +1,6 @@
 import { $fetch, FetchError } from "ohmyfetch";
 import { QRCodeCanvas } from "qrcode.react";
 import useSWR from "swr";
-import { useLocation } from "wouter-preact";
 import type { Note, Response } from "../../server/types";
 import { IconButton } from "../components/IconButton";
 import { QrCodeIcon } from "../components/icons/QrCodeIcon";
@@ -9,6 +8,7 @@ import { Spinner } from "../components/Spinner";
 import { Textarea } from "../components/Textarea";
 import { decryptData } from "../encryption";
 import { useHashLocation } from "../hooks/useHashLocation";
+import { useTheme } from "../hooks/useTheme";
 import { cn, formatCreatedDate, formatRelativeTime } from "../utils";
 
 interface NotePageProps {
@@ -16,10 +16,8 @@ interface NotePageProps {
 }
 
 export function NotePage({ id }: NotePageProps) {
-	const [location] = useLocation();
 	const hash = useHashLocation();
-
-	const url = `${window.location.origin}${location}#${hash}`;
+	const { theme } = useTheme();
 
 	const {
 		data,
@@ -52,6 +50,11 @@ export function NotePage({ id }: NotePageProps) {
 	const text = data?.data.text;
 	const error = apiError?.response?.statusText || apiError?.message;
 
+	const zinc300 = "#d4d4d8";
+	const zinc800 = "#27272a";
+	const qrCodeBg = theme === "light" ? "#ffffff" : zinc800;
+	const qrCodeFg = theme === "light" ? "#000000" : zinc300;
+
 	return (
 		<div className="flex flex-col flex-grow gap-2">
 			{error && <div className="text-red-400 mx-auto">{error}</div>}
@@ -72,9 +75,11 @@ export function NotePage({ id }: NotePageProps) {
 							)}
 						>
 							<QRCodeCanvas
-								value={url}
+								value={window.location.href}
 								size={192}
 								className="rounded-md overflow-hidden"
+								bgColor={qrCodeBg}
+								fgColor={qrCodeFg}
 							/>
 						</div>
 					</details>
