@@ -22,7 +22,6 @@ WORKDIR /app
 RUN npm install -g pnpm@7.4.1
 
 COPY --from=build /build/package.json /build/pnpm-lock.yaml ./
-
 RUN pnpm install --prod
 
 COPY --from=build /build/dist ./dist
