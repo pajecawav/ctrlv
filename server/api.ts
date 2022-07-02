@@ -12,9 +12,8 @@ const createNoteSchema = z.object({
 		.nullable()
 		.default(null),
 });
-type CreateNoteSchema = z.infer<typeof createNoteSchema>;
 
-export const apiRouter: FastifyPluginCallback = async (api, options) => {
+export const apiRouter: FastifyPluginCallback = async (api, _options) => {
 	api.get<{ Params: { id: string }; Reply: Response<Note | null> }>(
 		"/notes/:id",
 		async (req, reply) => {

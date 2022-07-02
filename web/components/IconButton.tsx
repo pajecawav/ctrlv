@@ -1,5 +1,4 @@
 import { ComponentProps, ComponentType } from "preact";
-import type { Link, LinkProps } from "wouter-preact";
 import { cn } from "../utils";
 
 interface IconButtonProps extends Omit<ComponentProps<"button">, "as"> {

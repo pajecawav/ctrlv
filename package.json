@@ -13,7 +13,11 @@
 		"docker-build": "docker build -t ctrlv .",
 		"docker-start": "docker run --rm -p 8000:8000 ctrlv",
 		"format": "prettier --write --ignore-path=.gitignore './**/*.{js,jsx,ts,tsx,html,css,json,md,yml}'",
-		"clean": "rimraf dist"
+		"clean": "rimraf dist",
+		"prepare": "is-ci || husky install"
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx,json,md,yml,css}": "prettier --write"
 	},
 	"dependencies": {
 		"@fastify/static": "^6.4.0",
@@ -33,6 +37,9 @@
 		"cross-env": "^7.0.3",
 		"dayjs": "^1.11.3",
 		"esno": "^0.16.3",
+		"husky": "^8.0.1",
+		"is-ci": "^3.0.1",
+		"lint-staged": "^13.0.3",
 		"npm-run-all": "^4.1.5",
 		"ohmyfetch": "^0.4.18",
 		"pino-pretty": "^8.1.0",

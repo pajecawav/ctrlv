@@ -19,11 +19,7 @@ export function NotePage({ id }: NotePageProps) {
 	const hash = useHashLocation();
 	const { theme } = useTheme();
 
-	const {
-		data,
-		isValidating,
-		error: apiError,
-	} = useSWR<Response<Note>, FetchError>(
+	const { data, error: apiError } = useSWR<Response<Note>, FetchError>(
 		`/api/notes/${id}#${hash}`,
 		async () => {
 			const response = await $fetch<Response<Note>>(`/api/notes/${id}`);

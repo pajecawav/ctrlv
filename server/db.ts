@@ -32,11 +32,9 @@ export async function createNote({
 }): Promise<Note> {
 	const note = { id: nanoid(), text, createdAt: Date.now(), expiresAt };
 
-	const result = db
-		.prepare(
-			"INSERT INTO notes VALUES (@id, @text, @createdAt, @expiresAt)"
-		)
-		.run(note);
+	db.prepare(
+		"INSERT INTO notes VALUES (@id, @text, @createdAt, @expiresAt)"
+	).run(note);
 
 	return note;
 }

@@ -19,7 +19,7 @@ interface NotesHistoryStore {
 
 export const useNotesHistoryStore = create<NotesHistoryStore>()(
 	persist(
-		(set, get) => ({
+		(set, _get) => ({
 			notes: [],
 			enabled: true,
 			toggle: () => set(({ enabled }) => ({ enabled: !enabled })),
