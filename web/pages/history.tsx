@@ -20,6 +20,14 @@ export function HistoryPage() {
 		}
 	}
 
+	if (store.notes.length === 0) {
+		return (
+			<div className="grid h-32 place-items-center text-lg text-zinc-500 dark:text-zinc-400">
+				History is empty.
+			</div>
+		);
+	}
+
 	return (
 		<div className="flex flex-col gap-2">
 			<Button className="self-end" onClick={handleClean}>
