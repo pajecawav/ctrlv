@@ -1,5 +1,4 @@
 import { $fetch, FetchError } from "ohmyfetch";
-import { useEffect, useState } from "preact/hooks";
 import { QRCodeCanvas } from "qrcode.react";
 import useSWR from "swr";
 import { useLocation } from "wouter-preact";
@@ -9,27 +8,11 @@ import { QrCodeIcon } from "../components/icons/QrCodeIcon";
 import { Spinner } from "../components/Spinner";
 import { Textarea } from "../components/Textarea";
 import { decryptData } from "../encryption";
+import { useHashLocation } from "../hooks/useHashLocation";
 import { cn, formatCreatedDate, formatRelativeTime } from "../utils";
 
 interface NotePageProps {
 	id: string;
-}
-
-function getCurrentHash() {
-	return window.location.hash.replace(/^#/, "");
-}
-
-function useHashLocation() {
-	const [hash, setHash] = useState(getCurrentHash());
-
-	useEffect(() => {
-		const handler = () => setHash(getCurrentHash());
-
-		window.addEventListener("hashchange", handler);
-		return () => window.removeEventListener("hashchange", handler);
-	}, []);
-
-	return hash;
 }
 
 export function NotePage({ id }: NotePageProps) {
