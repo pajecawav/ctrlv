@@ -1,14 +1,28 @@
 import { Link } from "wouter-preact";
 import { Button } from "../components/Button";
 import { useNotesHistoryStore } from "../stores/useNotesHistoryStore";
-import { formatCreatedDate, formatRelativeTime } from "../utils";
+import { formatCreatedDate } from "../utils";
 
 export function HistoryPage() {
 	const store = useNotesHistoryStore();
 
+	function handleClean() {
+		const notesCount = store.notes.length;
+		const word = notesCount === 1 ? "note" : "notes";
+
+		if (
+			notesCount > 0 &&
+			confirm(
+				`Are you sure you want to delete ${notesCount} ${word} from history?`
+			)
+		) {
+			store.clean();
+		}
+	}
+
 	return (
 		<div className="flex flex-col gap-2">
-			<Button className="self-end" onClick={store.clean}>
+			<Button className="self-end" onClick={handleClean}>
 				Clear
 			</Button>
 
