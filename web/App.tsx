@@ -14,7 +14,7 @@ export default function App() {
 	return (
 		<SWRConfig value={swrConfig}>
 			<ThemeContextProvider>
-				<div className="max-w-3xl min-h-screen mx-auto px-2 pb-2 flex flex-col font-medium dark:text-zinc-300">
+				<div className="max-w-3xl full-screen-height mx-auto px-2 pb-2 flex flex-col font-medium dark:text-zinc-300">
 					<Header />
 
 					<main className="flex-grow flex flex-col">

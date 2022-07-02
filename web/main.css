@@ -4,4 +4,22 @@
 
 body {
 	@apply dark:bg-zinc-800 transition-colors;
+	-webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#app {
+	/* fallback */
+	height: 100vh;
+	/* it's recommended to use 'stretch' and use postcss to add vendor prefixes
+	 * but '-moz-fill-available' doesn't work on desktop for some reason */
+	height: -webkit-fill-available;
+}
+
+@layer utilities {
+	.full-screen-height {
+		height: 100vh;
+		height: -webkit-fill-available;
+	}
 }
