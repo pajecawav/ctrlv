@@ -16,7 +16,7 @@ export function Button({
 	return (
 		<button
 			className={cn(
-				"relative rounded-md px-3 py-1 transition-all disabled:opacity-75",
+				"relative rounded-md px-3 py-1 transition-[background-color] disabled:opacity-75",
 				"enabled:hover:bg-zinc-100 enabled:active:bg-zink-200 dark:enabled:hover:bg-zinc-700 dark:enabled:active:bg-zinc-600",
 				className
 			)}
