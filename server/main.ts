@@ -13,15 +13,13 @@ const HOST = process.env.HOST || "0.0.0.0";
 
 const server = fastify({
 	logger: {
-		transport: isDev
-			? {
-					target: "pino-pretty",
-					options: {
-						translateTime: "HH:MM:ss Z",
-						ignore: "pid,hostname",
-					},
-			  }
-			: undefined,
+		transport: {
+			target: "pino-pretty",
+			options: {
+				translateTime: "HH:MM:ss Z",
+				ignore: "pid,hostname",
+			},
+		},
 	},
 });
 
@@ -34,8 +32,8 @@ if (!isDev) {
 
 server.register(apiRouter, { prefix: "/api" });
 
-server.setNotFoundHandler((req, res) => {
-	res.sendFile("index.html");
+server.setNotFoundHandler((req, reply) => {
+	reply.sendFile("index.html");
 });
 
 server.listen({ port: PORT, host: HOST }, (err, address) => {
