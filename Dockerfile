@@ -5,7 +5,7 @@ WORKDIR /build
 # TODO: use ARG for pnpm version
 RUN npm install -g pnpm@7.4.1
 
-# pnpm fetch does require only lockfile
+# pnpm fetch requires only lockfile
 COPY pnpm-lock.yaml ./
 RUN pnpm fetch
 

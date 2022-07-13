@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 dayjs.extend(relativeTime);
 
 export function cn(...values: any[]): string {
-	return values.filter(Boolean).join(" ");
+	return values.filter(v => typeof v === "string").join(" ");
 }
 
 export function formatCreatedDate(date: number | string | dayjs.Dayjs) {

@@ -14,7 +14,7 @@ export function IconButton({
 		<Component
 			className={cn(
 				"rounded-md p-[0.25em] transition-[background-color]",
-				"hover:bg-zinc-100 active:bg-zink-200 dark:hover:bg-zinc-700 dark:active:bg-zinc-600",
+				"hover:bg-zinc-100 active:bg-zinc-200 dark:hover:bg-zinc-700 dark:active:bg-zinc-600",
 				className
 			)}
 			{...props}
