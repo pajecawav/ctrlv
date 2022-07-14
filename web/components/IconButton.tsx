@@ -13,7 +13,7 @@ export function IconButton({
 	return (
 		<Component
 			className={cn(
-				"rounded-md p-[0.25em] transition-[background-color]",
+				"rounded-md p-[0.25em] cursor-pointer transition-[background-color]",
 				"hover:bg-zinc-100 active:bg-zinc-200 dark:hover:bg-zinc-700 dark:active:bg-zinc-600",
 				className
 			)}
